@@ -1,104 +1,97 @@
-// const mongoose = require('mongoose');
-// const { BadRequestError } = require('../errors');
-// const handlePromise = require('../helpers/promise.helpers');
-// const Contact = require('../models/contact.models');
+const mongoose = require('mongoose');
+const { BadRequestError } = require('../error');
+const handlePromise = require('../helpers/promise.helper');
+const Review = require('../models/review.model');
 exports.create = async function(req, res, next){
-    // if(!req.body.name)
-    //     return next(new BadRequestError(400, "Name cannot be empty"));
-    // const contact = new Contact(
-    //     {
-    //         name: req.body.name,
-    //         email: req.body.email,
-    //         address: req.body.address,
-    //         phone: req.body.phone,
-    //         favorite: req.body.favorite === true
-    //     }
-    // );
-    // const [error, document] = await handlePromise(contact.save());
-    // if(error)
-    //     return next(new BadRequestError(500, "An error occurred while creating the contact"));
-    // return res.send(document);
-    res.send({message: 'create'});
+    if(!req.body.name)
+        return next(new BadRequestError(400, "Tên không thể để trống"));
+    const review = new Review(
+        {
+            name: req.body.name,
+            location: req.body.location,
+            description: req.body.description,
+            image: req.body.image,
+            trend: req.body.trend === true
+        }
+    );
+    const [error, document] = await handlePromise(review.save());
+    if(error)
+        return next(new BadRequestError(500, "Có lỗi trong quá trình tạo"));
+    return res.send(document);
 };
 exports.findAll = async function(req, res, next){
-    // const condition = {  };
-    // const {name} = req.query;
-    // if (name) 
-    //     condition.name = { $regex: new RegExp(name), $options: "i" };
+    const condition = {  };
+    const {name} = req.query;
+    if (name) 
+        condition.name = { $regex: new RegExp(name), $options: "i" };
     
-    // const [error, documents] = await handlePromise(Contact.find(condition));
-    // if (error) 
-    //     return next(new BadRequestError (500, "An error occunred while retrieving contacts"));
-    // return res.send(documents) ;
-    res.send({message: 'find all'})
+    const [error, documents] = await handlePromise(Review.find(condition));
+    if (error) 
+        return next(new BadRequestError (500, "Có lỗi trong quá trình tìm kiếm"));
+    return res.send(documents) ;
 };
 exports.findOne = async function(req, res, next){
-    // const {id} = req.params;
-    // const condition = {
-    //     _id: id && mongoose.isValidObjectId(id) ? id : null
-    // }
-    // const [error, document] = await handlePromise(Contact.findOne(condition));
-    // if (error)
-    //     return next(new BadRequestError(500, `Error retrieving contact with id=${req.params.id}` )) ;
+    const {id} = req.params;
+    const condition = {
+        _id: id && mongoose.isValidObjectId(id) ? id : null
+    }
+    const [error, document] = await handlePromise(Review.findOne(condition));
+    if (error)
+        return next(new BadRequestError(500, `Lỗi trong quá trình tìm kiếm địa điểm với id=${req.params.id}` )) ;
     
-    // if (!document) 
-    //     return next(new BadRequestError(404, "Contact not found" )) ;
-    // return res.send(document);
-    res.send({message: 'find one'})
+    if (!document) 
+        return next(new BadRequestError(404, "Không tìm thấy địa điểm này" )) ;
+    return res.send(document);
 };
 exports.update = async function(req, res, next){
-//     if (Object.keys(req.body).length === 0)
-//         return next(new BadRequestError(400, "Data to update can not be empty" ));
-// 	const {id} = req.params;
-//     const condition = {
-//         _id: id && mongoose.isValidObjectId(id) ? id : null
-//     };
+    if (Object.keys(req.body).length === 0)
+        return next(new BadRequestError(400, "Dữ liệu cần cập nhật không thể trống" ));
+	const {id} = req.params;
+    const condition = {
+        _id: id && mongoose.isValidObjectId(id) ? id : null
+    };
     
-//     const [error, document] = await handlePromise(
-//         Contact.findOneAndUpdate(condition, req.body, { new: true} )
-//     );
+    const [error, document] = await handlePromise(
+        Review.findOneAndUpdate(condition, req.body, { new: true} )
+    );
     
-//     if (error) 
-//         return next(new BadRequestError(500, `Error updating contact with id=${req.params.id}` )) ;
+    if (error) 
+        return next(new BadRequestError(500, `Lỗi trong quá trình cập nhật địa điểm với id=${req.params.id}` )) ;
     
-//     if (!document) 
-//         return next(new BadRequestError(404, "Contact not found”))"));
+    if (!document) 
+        return next(new BadRequestError(404, "Không tìm thấy địa điểm này”))"));
     
-//     return res.send({ message: "Contact was updated successfully", });
-    res.send({message: 'update'});
+    return res.send({ message: "Địa điểm đã cập nhật thành công", });
 };
 exports.delete = async function(req, res, next){
-    // const {id} = req.params;
-    // const condition = {
-    //     _id: id && mongoose.isValidObjectId(id) ? id : null
-    // };
-    // const [error, document] = await handlePromise(
-    //     Contact.findOneAndDelete(condition)
-    // );
-    // if (error)
-    //     return next(new BadRequestError(500, `Could not delete contact with id=${req.params.iđ}` )) ;
+    const {id} = req.params;
+    const condition = {
+        _id: id && mongoose.isValidObjectId(id) ? id : null
+    };
+    const [error, document] = await handlePromise(
+        Review.findOneAndDelete(condition)
+    );
+    if (error)
+        return next(new BadRequestError(500, `Không thể xóa địa điểm với id=${req.params.iđ}` )) ;
     
-    // if (!document)
-    //     return next(new BadRequestError(404, "Contact not found"));
-    // return res.send({ message: "Contact was deleted successfully", });
-    res.send({message: 'delete'})
+    if (!document)
+        return next(new BadRequestError(404, "Không tìm thấy địa điểm này"));
+    return res.send({ message: "Đã xóa địa điểm thành công", });
 };
 exports.deleteAll = async function(req, res, next){
-    // const [error, data] = await handlePromise(
-    //     Contact.deleteMany({ })
-    // );
+    const [error, data] = await handlePromise(
+        Review.deleteMany({ })
+    );
     
-    // if (error)
-    //     return next(new BadRequestError(500, "An error occurred while removing all contacts"));
-    // return res.send({ message: `${data.deletedCount} contacts were deleted successfully`});
-    res.send({message: 'delete All'})
+    if (error)
+        return next(new BadRequestError(500, "Có lỗi xảy ra trong quá trình xóa tất cả địa điểm"));
+    return res.send({ message: `${data.deletedCount} địa điểm đã được xóa thành công`});
 };
-exports.findAllFavorite = async function(req, res, next){
-    // const [error, documents] = await handlePromise(
-    //     Contact.find({ favorite: true })
-    // );
-    // if (error)
-    //     return next(new BadRequestError (500, "An error occurred while retrieving favorite contacts"));
-    // return res.send(documents);
-    res.send({message: 'find All favorite'})
+exports.findAllTrend = async function(req, res, next){
+    const [error, documents] = await handlePromise(
+        Review.find({ favorite: true })
+    );
+    if (error)
+        return next(new BadRequestError (500, "Có lỗi xảy ra trong quá trình tìm kiếm các địa điểm nổi tiếng"));
+    return res.send(documents);
 };
