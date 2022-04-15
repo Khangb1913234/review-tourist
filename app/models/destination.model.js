@@ -1,0 +1,23 @@
+const mongoose = require("mongoose");
+const schema = mongoose.Schema(
+	{   
+		name: {
+			type: String,
+			required: [true, 'Destination name is required']
+		},
+		location: String,
+		description: String,
+		image: String,
+		collaborator_tour: String,
+		trend: Boolean
+	},
+	{
+		timestamps: true
+	}
+)
+schema.method('toJSON', function(){
+	const { __v, _id, ...object} = this.toObject();
+	object.id = _id;
+	return object;
+});
+module.exports = mongoose.model('destination', schema);
