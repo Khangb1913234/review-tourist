@@ -4,7 +4,7 @@ module.exports = function(app){
     const router = express.Router();
     router.post("/", destinations.create);
     router.get("/", destinations.findAll);
-    router.get("/favorite", destinations.findAllTrend);
+    router.get("/trend", destinations.findAllTrend);
     router.get("/:id", destinations.findOne);
     router.put("/:id", destinations.update);
     router.delete("/:id", destinations.delete);
