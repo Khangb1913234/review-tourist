@@ -9,11 +9,14 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const setupContactRoutes = require("./app/routes/destination.route");
-setupContactRoutes(app);
+const setupDestinationRoutes = require("./app/routes/destination.route");
+setupDestinationRoutes(app);
 
-const setupColloborator = require("./app/routes/collaborator.route")
-setupColloborator(app);
+const setupCollaborator = require("./app/routes/collaborator.route")
+setupCollaborator(app);
+
+const setupAuthRoutes = require("./app/routes/auth.route");
+setupAuthRoutes(app);
 
 app.use((req, res, next) => {
     // Code ở đây sẽ chạy khi không có route được định nghĩa nào

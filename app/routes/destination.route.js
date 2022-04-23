@@ -1,7 +1,10 @@
 const express = require("express");
 const destinations = require("../controllers/destination.controller");
+const { verifyToken } = require("../middlewares");
+
 module.exports = function(app){
     const router = express.Router();
+    router.use(verifyToken);
     router.post("/", destinations.create);
     router.get("/", destinations.findAll);
     router.get("/trend", destinations.findAllTrend);
