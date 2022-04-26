@@ -1,7 +1,9 @@
 const express = require("express");
 const collaborators = require("../controllers/collaborator.controller");
+const { verifyToken } = require("../middlewares");
 module.exports = function(app){
     const router = express.Router();
+    router.use(verifyToken);
     router.post("/", collaborators.create);
     router.get("/", collaborators.findAll);
     router.get("/:id", collaborators.findOne);

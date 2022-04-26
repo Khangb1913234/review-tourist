@@ -9,7 +9,7 @@ const checkDuplicateUsernameOrEmail = async (req, res, next) => {
         }).exec();
 
         if (userByUsername) {
-            return next(new BadRequestError(422, "Username is already in use"));
+            return next(new BadRequestError(422, "Username đã được sử dụng"));
         }
 
         const userByEmail = await User.findOne({
@@ -17,7 +17,7 @@ const checkDuplicateUsernameOrEmail = async (req, res, next) => {
         }).exec();
 
         if (userByEmail) {
-            return next(new BadRequestError(422, "Email is already in use"));
+            return next(new BadRequestError(422, "Email đã được sử dụng"));
         }
 
         return next();
